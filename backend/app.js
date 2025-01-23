@@ -19,7 +19,7 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
-
+console.log(process.env.CORS_ORIGIN.split(","));
 app.use(cors(corsOptions));
 
 // Routes
