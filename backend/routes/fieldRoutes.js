@@ -1,0 +1,162 @@
+const express = require("express");
+const {
+  getFields,
+  addField,
+  updateField,
+  deleteField,
+} = require("../controllers/fieldController");
+const { protect } = require("../middleware/authMiddleware");
+const router = express.Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Fields
+ *   description: CRUD operations for managing agricultural fields
+ */
+
+/**
+ * @swagger
+ * /api/fields:
+ *   get:
+ *     summary: Get all fields with pagination, sorting, and filtering
+ *     tags: [Fields]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of fields per page
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: Sort fields by a specific attribute (e.g., name, cropType)
+ *       - in: query
+ *         name: cropType
+ *         schema:
+ *           type: string
+ *         description: Filter fields by crop type
+ *     responses:
+ *       200:
+ *         description: A list of fields
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/", protect, getFields);
+
+/**
+ * @swagger
+ * /api/fields:
+ *   post:
+ *     summary: Add a new field
+ *     tags: [Fields]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Field 1
+ *               location:
+ *                 type: object
+ *                 properties:
+ *                   latitude:
+ *                     type: number
+ *                     example: 28.7041
+ *                   longitude:
+ *                     type: number
+ *                     example: 77.1025
+ *               cropType:
+ *                 type: string
+ *                 example: Wheat
+ *               areaSize:
+ *                 type: number
+ *                 example: 5.2
+ *     responses:
+ *       201:
+ *         description: Field created successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/", protect, addField);
+
+/**
+ * @swagger
+ * /api/fields/{id}:
+ *   put:
+ *     summary: Update an existing field
+ *     tags: [Fields]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Field ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Updated Field Name
+ *               cropType:
+ *                 type: string
+ *                 example: Corn
+ *               areaSize:
+ *                 type: number
+ *                 example: 10.0
+ *     responses:
+ *       200:
+ *         description: Field updated successfully
+ *       404:
+ *         description: Field not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.put("/:id", protect, updateField);
+
+/**
+ * @swagger
+ * /api/fields/{id}:
+ *   delete:
+ *     summary: Delete a field
+ *     tags: [Fields]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Field ID
+ *     responses:
+ *       200:
+ *         description: Field deleted successfully
+ *       404:
+ *         description: Field not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.delete("/:id", protect, deleteField);
+
+module.exports = router;
