@@ -9,6 +9,9 @@ const FieldSchema = new mongoose.Schema(
     },
     cropType: { type: String, required: true },
     areaSize: { type: Number, required: true },
+    soilHealth: { type: String, default: "Unknown" },
+    cropHealth: { type: String, default: "Unknown" },
+    yieldTrends: { type: [Number], default: [] },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   {

@@ -1,9 +1,11 @@
 const express = require("express");
 const {
   getFields,
+  getFieldData,
   addField,
   updateField,
   deleteField,
+  analyzeField,
 } = require("../controllers/fieldController");
 const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -92,6 +94,50 @@ router.get("/", protect, getFields);
  *         description: Unauthorized
  */
 router.post("/", protect, addField);
+/**
+ * @swagger
+ * /api/fields/{id}:
+ *   get:
+ *     summary: Retrieve data for a specific field by ID
+ *     tags: [Fields]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Field ID
+ *     responses:
+ *       200:
+ *         description: Field data retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 location:
+ *                   type: object
+ *                   properties:
+ *                     latitude:
+ *                       type: number
+ *                     longitude:
+ *                       type: number
+ *                 cropType:
+ *                   type: string
+ *                 areaSize:
+ *                   type: number
+ *       404:
+ *         description: Field not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/:id", protect, getFieldData);
 
 /**
  * @swagger
@@ -158,5 +204,39 @@ router.put("/:id", protect, updateField);
  *         description: Unauthorized
  */
 router.delete("/:id", protect, deleteField);
+/**
+ * @swagger
+ * /api/fields/{id}/analyze:
+ *   post:
+ *     summary: Analyze field data using AI
+ *     tags: [Fields]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: AI-generated insights
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 soilHealth:
+ *                   type: string
+ *                 cropHealth:
+ *                   type: string
+ *                 yieldTrends:
+ *                   type: array
+ *                   items:
+ *                     type: number
+ *                 recommendations:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
 
+router.post("/:id/analyze", protect, analyzeField);
 module.exports = router;

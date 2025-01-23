@@ -49,6 +49,24 @@ exports.addField = async (req, res) => {
       .json({ message: "Error adding field", error: error.message });
   }
 };
+// Get specific field data by ID
+exports.getFieldData = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const field = await Field.findById(id).where({ user: req.user.id });
+    console.log(id);
+    if (!field) {
+      return res.status(404).json({ message: "Field not found" });
+    }
+
+    res.status(200).json(field);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching field data", error: error.message });
+  }
+};
 
 // Update an existing field
 exports.updateField = async (req, res) => {
@@ -90,4 +108,41 @@ exports.deleteField = async (req, res) => {
       .status(500)
       .json({ message: "Error deleting field", error: error.message });
   }
+};
+//analyzeField function
+exports.analyzeField = async (req, res) => {
+  const { id } = req.params;
+  const field = await Field.findById(id);
+
+  if (!field) {
+    return res.status(404).json({ message: "Field not found" });
+  }
+
+  // Dummy AI data
+  const soilHealth = ["Poor", "Fair", "Good", "Excellent"][
+    Math.floor(Math.random() * 4)
+  ];
+  const cropHealth = ["Poor", "Fair", "Good", "Excellent"][
+    Math.floor(Math.random() * 4)
+  ];
+  const yieldTrends = field.yieldTrends.concat(Math.floor(Math.random() * 100)); // Add a random yield value
+  const recommendations = [
+    "Increase irrigation",
+    "Add fertilizers",
+    "Reduce pesticide use",
+  ];
+
+  // Update field with AI data
+  field.soilHealth = soilHealth;
+  field.cropHealth = cropHealth;
+  field.yieldTrends = yieldTrends;
+
+  await field.save();
+
+  res.status(200).json({
+    soilHealth,
+    cropHealth,
+    yieldTrends,
+    recommendations,
+  });
 };
