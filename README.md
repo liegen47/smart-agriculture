@@ -128,5 +128,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 For any queries, please reach out to:
 - Email: vanshkapoor418@gmail.com
-- GitHub: [your-github-username](https://github.com/Liegen47)
+- GitHub: [liegen47](https://github.com/Liegen47)
 
