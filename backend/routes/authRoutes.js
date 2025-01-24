@@ -3,8 +3,12 @@ const {
   registerUser,
   loginUser,
   adminLogin,
+  authVerify,
+  logoutUser,
 } = require("../controllers/authController");
+const { protect } = require("../middleware/authMiddleware"); // Import protect middleware
 const router = express.Router();
+
 /**
  * @swagger
  * /api/auth/register:
@@ -55,7 +59,6 @@ const router = express.Router();
  *       400:
  *         description: Bad Request - Invalid input or email already exists
  */
-
 router.post("/register", registerUser);
 
 /**
@@ -90,10 +93,9 @@ router.post("/register", registerUser);
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 message:
  *                   type: string
- *                   description: JWT token for authentication
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                   example: User logged in successfully
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       401:
@@ -101,7 +103,6 @@ router.post("/register", registerUser);
  *       400:
  *         description: Bad Request - Missing or invalid input
  */
-
 router.post("/login", loginUser);
 
 /**
@@ -111,7 +112,7 @@ router.post("/login", loginUser);
  *     summary: Verify the JWT token
  *     tags: [Authentication]
  *     security:
- *       - BearerAuth: []
+ *       - CookieAuth: []
  *     responses:
  *       200:
  *         description: Token is valid
@@ -128,7 +129,7 @@ router.post("/login", loginUser);
  *       401:
  *         description: Unauthorized - Token is invalid or expired
  */
-router.post("/admin/login", adminLogin);
+router.get("/verify", protect, authVerify);
 
 /**
  * @swagger
@@ -145,8 +146,12 @@ router.post("/admin/login", adminLogin);
  *             properties:
  *               email:
  *                 type: string
+ *                 description: Email address of the admin
+ *                 example: admin@example.com
  *               password:
  *                 type: string
+ *                 description: Password for the admin account
+ *                 example: AdminPassword123!
  *     responses:
  *       200:
  *         description: Admin logged in successfully
@@ -155,12 +160,35 @@ router.post("/admin/login", adminLogin);
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 message:
  *                   type: string
- *                   description: JWT token for authentication
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                   example: Admin logged in successfully
  *                 user:
  *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Invalid email or password
+ */
+router.post("/admin/login", adminLogin);
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: User logged out successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Logged out successfully
+ *       500:
+ *         description: Internal server error
  */
 
+router.post("/logout", logoutUser);
 module.exports = router;

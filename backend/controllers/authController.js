@@ -15,12 +15,16 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
 
     const user = await User.create({ name, email, password, role });
-    res.status(201).json({
+    const token = generateToken(user.id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+    res.json({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user.id),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -34,12 +38,16 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
+      const token = generateToken(user.id);
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
       res.json({
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
-        token: generateToken(user.id),
       });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
@@ -71,13 +79,53 @@ exports.adminLogin = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    res.status(200).json({
+    const token = generateToken(user.id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+    res.json({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user.id),
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.authVerify = async (req, res) => {
+  const token = req.headers.cookie.replace("token=", "");
+  console.log(token);
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    res.status(200).json({
+      message: "Token is valid",
+      user: { id: decoded.id },
+    });
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
+};
+
+// Logout user
+exports.logoutUser = async (req, res) => {
+  try {
+    // Clear the token cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+      sameSite: "strict", // Prevent CSRF attacks
+    });
+
+    // Send a success response
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

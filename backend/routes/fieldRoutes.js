@@ -24,7 +24,7 @@ const router = express.Router();
  *     summary: Get all fields with pagination, sorting, and filtering
  *     tags: [Fields]
  *     security:
- *       - BearerAuth: []
+ *       - CookieAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -61,7 +61,7 @@ router.get("/", protect, getFields);
  *     summary: Add a new field
  *     tags: [Fields]
  *     security:
- *       - BearerAuth: []
+ *       - CookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -94,6 +94,7 @@ router.get("/", protect, getFields);
  *         description: Unauthorized
  */
 router.post("/", protect, addField);
+
 /**
  * @swagger
  * /api/fields/{id}:
@@ -101,7 +102,7 @@ router.post("/", protect, addField);
  *     summary: Retrieve data for a specific field by ID
  *     tags: [Fields]
  *     security:
- *       - BearerAuth: []
+ *       - CookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -146,7 +147,7 @@ router.get("/:id", protect, getFieldData);
  *     summary: Update an existing field
  *     tags: [Fields]
  *     security:
- *       - BearerAuth: []
+ *       - CookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -187,7 +188,7 @@ router.put("/:id", protect, updateField);
  *     summary: Delete a field
  *     tags: [Fields]
  *     security:
- *       - BearerAuth: []
+ *       - CookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -204,6 +205,7 @@ router.put("/:id", protect, updateField);
  *         description: Unauthorized
  */
 router.delete("/:id", protect, deleteField);
+
 /**
  * @swagger
  * /api/fields/{id}/analyze:
@@ -237,6 +239,6 @@ router.delete("/:id", protect, deleteField);
  *                   items:
  *                     type: string
  */
-
 router.post("/:id/analyze", protect, analyzeField);
+
 module.exports = router;
