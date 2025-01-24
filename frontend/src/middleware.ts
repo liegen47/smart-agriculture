@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
           cookie: `token=${token}`,
         },
       });
-
+      
       if (verifyResponse.status !== 200) {
         const response = NextResponse.redirect(new URL('/login', request.url));
         response.cookies.delete('token');
