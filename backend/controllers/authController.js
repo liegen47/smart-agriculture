@@ -18,8 +18,8 @@ exports.registerUser = async (req, res) => {
     const token = generateToken(user.id);
     res.cookie("token", token, {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: process.env.NODE_ENV === "production", // Ensures cookies are only sent over HTTPS in production
-      sameSite: "lax", // Prevents the cookie from being sent in cross-site requests
+      secure: true, // Ensures the cookie is only sent over HTTPS
+      sameSite: "none", // Allows the cookie to be sent in cross-site requests
     });
     res.json({
       id: user.id,
@@ -41,9 +41,9 @@ exports.loginUser = async (req, res) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = generateToken(user.id);
       res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+        secure: true, // Ensures the cookie is only sent over HTTPS
+        sameSite: "none", // Allows the cookie to be sent in cross-site requests
       });
       res.json({
         id: user.id,
@@ -84,8 +84,8 @@ exports.adminLogin = async (req, res) => {
     const token = generateToken(user.id);
     res.cookie("token", token, {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: process.env.NODE_ENV === "production", // Ensures cookies are only sent over HTTPS in production
-      sameSite: "lax", // Prevents the cookie from being sent in cross-site requests
+      secure: true, // Ensures the cookie is only sent over HTTPS
+      sameSite: "none", // Allows the cookie to be sent in cross-site requests
     });
     res.json({
       id: user.id,
