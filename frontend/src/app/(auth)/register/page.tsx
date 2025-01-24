@@ -52,8 +52,8 @@ const RegisterPage = () => {
     try {
       const response = await axiosInstance.post("/auth/register", data);
 
-      const { id, name, email, role } = response.data;
-      const user = { id, name, email, role };
+      const { id, name, email, role, image } = response.data;
+      const user = { id, name, email, role, image };
       sessionStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       toast.success("Registration successful! You are now logged in.");

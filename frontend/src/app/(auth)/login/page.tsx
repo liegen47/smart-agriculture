@@ -49,8 +49,8 @@ const LoginPage = () => {
     try {
       const response = await axiosInstance.post("/auth/login", data);
 
-      const { id, name, email, role } = response.data;
-      const user = { id, name, email, role };
+      const { id, name, email, role, image } = response.data;
+      const user = { id, name, email, role, image };
       sessionStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       toast.success("Login successful!");
