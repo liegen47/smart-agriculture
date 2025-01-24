@@ -19,8 +19,7 @@ exports.registerUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
       secure: true, // Ensures the cookie is only sent over HTTPS
-      sameSite: "none",
-      domain: process.env.FRONTEND_URL,
+      sameSite: "none", // Allows the cookie to be sent in cross-site requests
     });
     res.json({
       id: user.id,
@@ -45,7 +44,6 @@ exports.loginUser = async (req, res) => {
         httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
         secure: true, // Ensures the cookie is only sent over HTTPS
         sameSite: "none", // Allows the cookie to be sent in cross-site requests
-        domain: process.env.FRONTEND_URL, // Set the domain to the frontend URL
       });
       res.json({
         id: user.id,
@@ -88,7 +86,6 @@ exports.adminLogin = async (req, res) => {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
       secure: true, // Ensures the cookie is only sent over HTTPS
       sameSite: "none", // Allows the cookie to be sent in cross-site requests
-      domain: process.env.FRONTEND_URL, // Set the domain to the frontend URL
     });
     res.json({
       id: user.id,
