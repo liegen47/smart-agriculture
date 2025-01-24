@@ -55,7 +55,7 @@ exports.getFieldData = async (req, res) => {
 
   try {
     const field = await Field.findById(id).where({ user: req.user.id });
-    console.log(id);
+
     if (!field) {
       return res.status(404).json({ message: "Field not found" });
     }

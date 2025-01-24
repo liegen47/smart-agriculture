@@ -97,7 +97,7 @@ exports.adminLogin = async (req, res) => {
 
 exports.authVerify = async (req, res) => {
   const token = req.headers.cookie.replace("token=", "");
-  console.log(token);
+
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
