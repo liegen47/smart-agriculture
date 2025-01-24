@@ -20,7 +20,6 @@ exports.registerUser = async (req, res) => {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
       secure: true, // Ensures the cookie is only sent over HTTPS
       sameSite: "none", // Allows the cookie to be sent in cross-site requests
-      domain: ".onrender.com",
     });
     res.json({
       id: user.id,
@@ -45,7 +44,6 @@ exports.loginUser = async (req, res) => {
         httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
         secure: true, // Ensures the cookie is only sent over HTTPS
         sameSite: "none", // Allows the cookie to be sent in cross-site requests
-        domain: ".onrender.com",
       });
       res.json({
         id: user.id,
@@ -88,7 +86,6 @@ exports.adminLogin = async (req, res) => {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
       secure: true, // Ensures the cookie is only sent over HTTPS
       sameSite: "none", // Allows the cookie to be sent in cross-site requests
-      domain: ".onrender.com",
     });
     res.json({
       id: user.id,
