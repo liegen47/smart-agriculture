@@ -16,7 +16,6 @@ type PageProps = { params: Promise<{ id: string }> };
 
 export default async function Page(props: PageProps) {
   const params = await props.params;
-  console.log("Field ID:", params.id);
   const field = await getDataById<Field>("fields", params.id);
   const data = (await getDataById<AnalyticsData>(
     `fields/${params.id}`,
@@ -28,14 +27,12 @@ export default async function Page(props: PageProps) {
     yieldTrends: [],
     recommendations: [],
   };
-  console.log("Field Data:", field);
-  console.log("Analytics Data:", data);
 
   return (
     <PageContainer scrollable>
       <div className="flex-1 space-y-4">
         <Suspense fallback={<FormCardSkeleton />}>
-          <AnalyticsComponent data={data} />
+          <AnalyticsComponent data={data} field={field} />
         </Suspense>
       </div>
     </PageContainer>

@@ -19,6 +19,9 @@ import {
 } from "@/components/ui/table";
 import { AreaChartComponent } from "./area-chart-component";
 import { ChartConfig } from "@/components/ui/chart";
+import { Field } from "../fields/field-form";
+import { StatCard } from "./stats-card";
+import { LandPlot, Wheat } from "lucide-react";
 
 export interface AnalyticsData {
   soilHealth: string;
@@ -36,10 +39,27 @@ const chartConfig = {
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
-
-export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
+export function AnalyticsComponent({
+  data,
+  field,
+}: AnalyticsComponentProps & { field: Field | null }) {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const currentYear = new Date().getFullYear();
   const yieldTrendsData = data.yieldTrends.map((yieldValue, index) => ({
-    month: `Month ${index + 1}`,
+    month: monthNames[index % 12],
     yield: yieldValue,
   }));
 
@@ -47,12 +67,11 @@ export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
     <Card className="mx-auto w-full">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">
-          Field Analytics
+          Field Analytics - {field?.name} ({currentYear})
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {" "}
-        {/* Soil Health and Crop Health Cards */}
+      <CardContent className="flex flex-col gap-6">
+        {/* Each child here should be a block-level element */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
@@ -60,7 +79,7 @@ export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
             </CardHeader>
             <CardContent>
               <Badge
-                variant={data.soilHealth === "Poor" ? "destructive" : "default"}
+                variant={data.soilHealth === "Poor" ? "default" : "outline"}
               >
                 {data.soilHealth}
               </Badge>
@@ -84,7 +103,7 @@ export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
             <CardContent>
               <Badge
                 variant={
-                  data.cropHealth === "Excellent" ? "default" : "destructive"
+                  data.cropHealth === "Excellent" ? "outline" : "default"
                 }
               >
                 {data.cropHealth}
@@ -101,8 +120,19 @@ export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
               />
             </CardContent>
           </Card>
+          <StatCard
+            title="Field Area"
+            value={`${field?.areaSize} ha`}
+            icon={<LandPlot />}
+            description="Total area of field"
+          />
+          <StatCard
+            title="Total Crops"
+            value={field?.cropTypes.length}
+            icon={<Wheat />}
+            description="Total types of Crops"
+          />
         </div>
-        {/* Yield Trends Chart */}
         <Card>
           <CardHeader>
             <CardTitle>Yield Trends</CardTitle>
@@ -114,7 +144,6 @@ export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
             <AreaChartComponent data={yieldTrendsData} config={chartConfig} />
           </CardContent>
         </Card>
-        {/* Recommendations Table */}
         <Card>
           <CardHeader>
             <CardTitle>Recommendations</CardTitle>
@@ -132,7 +161,7 @@ export function AnalyticsComponent({ data }: AnalyticsComponentProps) {
                   <TableRow key={index}>
                     <TableCell>{recommendation}</TableCell>
                     <TableCell>
-                      <Badge variant={index === 0 ? "destructive" : "default"}>
+                      <Badge variant={index === 0 ? "default" : "outline"}>
                         {index === 0 ? "High" : "Medium"}
                       </Badge>
                     </TableCell>

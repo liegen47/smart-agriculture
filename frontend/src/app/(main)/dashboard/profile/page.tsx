@@ -8,7 +8,7 @@ import { useUser } from "@/context/user-context";
 
 export default function Page() {
   const { user } = useUser();
-  console.log("user", user);
+
   const profileData: ProfileFormValues = {
     name: user?.name || "",
     email: user?.email || "",

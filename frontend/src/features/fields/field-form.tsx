@@ -81,23 +81,17 @@ export default function FieldForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      let response;
       if (mode === "create") {
-        response = await axiosInstance.post("/fields", values);
+        await axiosInstance.post("/fields", values);
         toast.success("Field created successfully!");
         router.push("/dashboard/fields");
       } else if (mode === "edit" && initialData?._id) {
-        response = await axiosInstance.put(
-          `/fields/${initialData._id}`,
-          values
-        );
+        await axiosInstance.put(`/fields/${initialData._id}`, values);
         toast.success("Field updated successfully!");
         router.push("/dashboard/fields");
       } else {
         throw new Error("Invalid mode or missing field ID for edit mode.");
       }
-
-      console.log("API Response:", response.data);
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Failed to submit form. Please try again.");

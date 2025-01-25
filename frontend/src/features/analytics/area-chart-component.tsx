@@ -8,6 +8,7 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  TooltipProps,
 } from "recharts";
 
 interface ChartConfig {
@@ -28,6 +29,22 @@ interface AreaChartComponentProps {
 }
 
 export function AreaChartComponent({ data, config }: AreaChartComponentProps) {
+  // Define the tooltip content using proper types
+  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-background p-2 border rounded">
+          {payload.map((entry, index) => (
+            <p key={index} style={{ color: entry.color }}>
+              {`${config[entry.dataKey as string].label}: ${entry.value}`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <ResponsiveContainer width="100%" height={310}>
       <AreaChart
@@ -46,25 +63,7 @@ export function AreaChartComponent({ data, config }: AreaChartComponentProps) {
           tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis hide />
-        <Tooltip
-          cursor={false}
-          content={({ active, payload }) => {
-            if (active && payload && payload.length) {
-              return (
-                <div className="bg-background p-2 border rounded">
-                  {payload.map((entry: any, index) => (
-                    <p key={index} style={{ color: entry.color }}>
-                      {`${config[entry.dataKey as string].label}: ${
-                        entry.value
-                      }`}
-                    </p>
-                  ))}
-                </div>
-              );
-            }
-            return null;
-          }}
-        />
+        <Tooltip cursor={false} content={<CustomTooltip />} />
         {Object.keys(config).map((key) => (
           <Area
             key={key}
