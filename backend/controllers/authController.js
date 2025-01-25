@@ -116,18 +116,11 @@ exports.authVerify = async (req, res) => {
     res.status(401).json({ message: error.message });
   }
 };
-
 // Logout user
 exports.logoutUser = async (req, res) => {
   try {
-    // Clear the token cookie
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
-      sameSite: "strict", // Prevent CSRF attacks
-    });
-
-    // Send a success response
+    // Clear the token from the authorization header
+    delete req.headers.authorization; // Remove the authorization header
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
