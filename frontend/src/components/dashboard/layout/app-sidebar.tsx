@@ -65,6 +65,7 @@ export default function AppSidebar() {
       await axiosInstance.post("/auth/logout");
       setUser(null);
       await Logout();
+      sessionStorage.removeItem("user");
       toast.success("Logged out successfully");
       router.push("/login");
     } catch (error) {
