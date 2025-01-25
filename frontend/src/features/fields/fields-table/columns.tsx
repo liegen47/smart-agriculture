@@ -11,11 +11,11 @@ export const columns = (
     header: "NAME",
   },
   {
-    accessorKey: "cropType",
-    header: "CROP TYPE",
+    accessorKey: "cropTypes",
+    header: "CROP TYPES",
     cell: ({ row }) => {
-      const cropType = row.getValue("cropType") as string[];
-      return <div>{cropType}</div>;
+      const cropTypes = row.getValue("cropTypes") as [];
+      return <div>{cropTypes.join(", ")}</div>;
     },
   },
   {

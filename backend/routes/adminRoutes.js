@@ -163,8 +163,10 @@ router.get("/fields", protect, isAdmin, getAllFields);
  *                   type: string
  *                 location:
  *                   type: string
- *                 cropType:
- *                   type: string
+ *                 cropTypes:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *                 areaSize:
  *                   type: number
  *       404:

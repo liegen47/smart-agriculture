@@ -105,10 +105,9 @@ exports.getFieldAnalytics = async (req, res) => {
       Math.floor(Math.random() * 4)
     ];
 
-    // Ensure yieldTrends is an array before concatenating
     const yieldTrends = Array.isArray(field.yieldTrends)
       ? field.yieldTrends.concat(Math.floor(Math.random() * 100))
-      : [Math.floor(Math.random() * 100)]; // Initialize with a random yield value if yieldTrends is not an array
+      : [Math.floor(Math.random() * 100)];
 
     const recommendations = [
       "Increase irrigation",
@@ -116,7 +115,6 @@ exports.getFieldAnalytics = async (req, res) => {
       "Reduce pesticide use",
     ];
 
-    // Update field with AI data
     field.soilHealth = soilHealth;
     field.cropHealth = cropHealth;
     field.yieldTrends = yieldTrends;

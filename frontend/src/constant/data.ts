@@ -14,7 +14,7 @@ export interface Field {
   areaSize: number;
   soilHealth: string;
   cropHealth: string;
-  yieldTrends: any[];
+  yieldTrends: [];
   user: string;
   createdAt: string;
   updatedAt: string;

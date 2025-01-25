@@ -54,7 +54,9 @@ const RegisterPage = () => {
 
       const { id, name, email, role, image, token } = response.data;
       const user = { id, name, email, role, image };
-      sessionStorage.setItem("token", token);
+      document.cookie = `token=${token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }; Secure; SameSite=Strict`;
       sessionStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       toast.success("Registration successful! You are now logged in.");

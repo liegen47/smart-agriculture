@@ -10,13 +10,13 @@ const generateFakeField = (userId) => {
   const name = faker.lorem.words(2); // Generate a random field name
   const latitude = faker.location.latitude();
   const longitude = faker.location.longitude();
-  const cropType = faker.helpers.arrayElement([
+  const cropTypes = faker.helpers.arrayElements([
     "Wheat",
     "Corn",
     "Rice",
     "Soybean",
     "Barley",
-  ]);
+  ]); // Crop types as an array
   const areaSize = faker.number.float({ min: 1, max: 100, precision: 0.1 });
 
   // Dummy AI data
@@ -46,7 +46,7 @@ const generateFakeField = (userId) => {
   return {
     name,
     location: { latitude, longitude },
-    cropType,
+    cropTypes, // Crop types included in the database
     areaSize,
     soilHealth,
     cropHealth,

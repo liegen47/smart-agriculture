@@ -32,13 +32,13 @@ exports.getFields = async (req, res) => {
 
 // Add a new field
 exports.addField = async (req, res) => {
-  const { name, location, cropType, areaSize } = req.body;
+  const { name, location, cropTypes, areaSize } = req.body;
 
   try {
     const newField = await Field.create({
       name,
       location,
-      cropType,
+      cropTypes,
       areaSize,
       user: req.user.id,
     });
@@ -125,14 +125,15 @@ exports.analyzeField = async (req, res) => {
   const cropHealth = ["Poor", "Fair", "Good", "Excellent"][
     Math.floor(Math.random() * 4)
   ];
-  const yieldTrends = field.yieldTrends.concat(Math.floor(Math.random() * 100)); // Add a random yield value
+  const yieldTrends = Array.isArray(field.yieldTrends)
+    ? field.yieldTrends.concat(Math.floor(Math.random() * 100))
+    : [Math.floor(Math.random() * 100)];
   const recommendations = [
     "Increase irrigation",
     "Add fertilizers",
     "Reduce pesticide use",
   ];
 
-  // Update field with AI data
   field.soilHealth = soilHealth;
   field.cropHealth = cropHealth;
   field.yieldTrends = yieldTrends;

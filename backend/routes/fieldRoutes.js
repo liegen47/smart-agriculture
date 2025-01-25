@@ -40,12 +40,14 @@ const router = express.Router();
  *         name: sort
  *         schema:
  *           type: string
- *         description: Sort fields by a specific attribute (e.g., name, cropType)
+ *         description: Sort fields by a specific attribute (e.g., name, cropTypes)
  *       - in: query
- *         name: cropType
+ *         name: cropTypes
  *         schema:
- *           type: string
- *         description: Filter fields by crop type
+ *           type: array
+ *           items:
+ *             type: string
+ *         description: Filter fields by crop types
  *     responses:
  *       200:
  *         description: A list of fields
@@ -81,12 +83,13 @@ router.get("/", protect, getFields);
  *                   longitude:
  *                     type: number
  *                     example: 77.1025
- *               cropType:
- *                 type: string
- *                 example: Wheat
- *               areaSize:
- *                 type: number
- *                 example: 5.2
+ *                   cropTypes:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   areaSize:
+ *                     type: number
+ *                     example: 5.2
  *     responses:
  *       201:
  *         description: Field created successfully
@@ -129,8 +132,10 @@ router.post("/", protect, addField);
  *                       type: number
  *                     longitude:
  *                       type: number
- *                 cropType:
- *                   type: string
+ *                 cropTypes:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *                 areaSize:
  *                   type: number
  *       404:
@@ -165,9 +170,11 @@ router.get("/:id", protect, getFieldData);
  *               name:
  *                 type: string
  *                 example: Updated Field Name
- *               cropType:
- *                 type: string
- *                 example: Corn
+ *               cropTypes:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: [Corn, Wheat]
  *               areaSize:
  *                 type: number
  *                 example: 10.0

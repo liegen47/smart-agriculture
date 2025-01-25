@@ -7,7 +7,7 @@ const FieldSchema = new mongoose.Schema(
       latitude: { type: Number, required: true },
       longitude: { type: Number, required: true },
     },
-    cropType: { type: String, required: true },
+    cropTypes: { type: [], required: true },
     areaSize: { type: Number, required: true },
     soilHealth: { type: String, default: "Unknown" },
     cropHealth: { type: String, default: "Unknown" },
