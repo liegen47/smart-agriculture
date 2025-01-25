@@ -19,5 +19,11 @@ export default async function FieldViewPage({ fieldId }: TFieldViewPageProps) {
     pageTitle = `Edit Field - ${field.name}`;
   }
 
-  return <FieldForm initialData={field} pageTitle={pageTitle} />;
+  return (
+    <FieldForm
+      initialData={field}
+      pageTitle={pageTitle}
+      mode={field ? (field._id ? "edit" : "create") : "create"}
+    />
+  );
 }

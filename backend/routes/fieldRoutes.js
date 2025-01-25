@@ -6,6 +6,7 @@ const {
   updateField,
   deleteField,
   analyzeField,
+  getFieldStats,
 } = require("../controllers/fieldController");
 const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -97,6 +98,39 @@ router.get("/", protect, getFields);
  *         description: Unauthorized
  */
 router.post("/", protect, addField);
+
+/**
+ * @swagger
+ * /api/fields/stats:
+ *   get:
+ *     summary: Get aggregated statistics for fields
+ *     tags: [Fields]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Aggregated field statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalFields:
+ *                   type: integer
+ *                 totalArea:
+ *                   type: number
+ *                 averageArea:
+ *                   type: number
+ *                 minArea:
+ *                   type: number
+ *                 maxArea:
+ *                   type: number
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Error fetching field statistics
+ */
+router.get("/stats", protect, getFieldStats);
 
 /**
  * @swagger

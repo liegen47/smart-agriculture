@@ -43,9 +43,7 @@ const LandingNavbar = () => {
           {/* Show Dashboard Button if user is logged in */}
           {user && (
             <Link href="/dashboard" passHref>
-              <Button variant="outline" className="hidden sm:inline-flex">
-                Dashboard
-              </Button>
+              <Button variant="outline">Dashboard</Button>
             </Link>
           )}
 
@@ -53,13 +51,11 @@ const LandingNavbar = () => {
           {!user && (
             <>
               <Link href="/login" passHref>
-                <Button variant="outline" className="hidden sm:inline-flex">
-                  Sign In
-                </Button>
+                <Button variant="outline">Sign In</Button>
               </Link>
 
               <Link href="/register" passHref>
-                <Button>Sign Up</Button>
+                <Button className="hidden sm:inline-flex">Sign Up</Button>
               </Link>
             </>
           )}

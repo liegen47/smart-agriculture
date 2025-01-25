@@ -32,7 +32,7 @@ interface Location {
 }
 
 export interface Field {
-  id?: string; // Optional for new fields
+  _id?: string;
   name: string;
   location: Location;
   cropTypes: [];
@@ -86,9 +86,9 @@ export default function FieldForm({
         response = await axiosInstance.post("/fields", values);
         toast.success("Field created successfully!");
         router.push("/dashboard/fields");
-      } else if (mode === "edit" && initialData?.id) {
+      } else if (mode === "edit" && initialData?._id) {
         response = await axiosInstance.put(
-          `/api/fields/${initialData.id}`,
+          `/fields/${initialData._id}`,
           values
         );
         toast.success("Field updated successfully!");
