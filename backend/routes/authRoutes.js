@@ -112,7 +112,7 @@ router.post("/login", loginUser);
  *     summary: Verify the JWT token
  *     tags: [Authentication]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Token is valid
@@ -169,12 +169,15 @@ router.get("/verify", protect, authVerify);
  *         description: Unauthorized - Invalid email or password
  */
 router.post("/admin/login", adminLogin);
+
 /**
  * @swagger
  * /api/auth/logout:
  *   post:
  *     summary: Logout user
  *     tags: [Authentication]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: User logged out successfully
@@ -189,6 +192,5 @@ router.post("/admin/login", adminLogin);
  *       500:
  *         description: Internal server error
  */
-
-router.post("/logout", logoutUser);
+router.post("/logout", protect, logoutUser); // Added protect middleware for logout
 module.exports = router;

@@ -78,7 +78,14 @@ const FeatureSection = () => {
                   </AccordionTrigger>
                   <AccordionContent className="text-[17px] leading-relaxed text-muted-foreground">
                     {description}
-                    <div className="mt-6 mb-2 md:hidden aspect-video w-full bg-muted rounded-xl" />
+                    <div className="mt-6 mb-2 md:hidden aspect-square w-full bg-muted rounded-xl relative">
+                      <Image
+                        src="/Images/farm tractor.svg"
+                        alt="Farm Tractor"
+                        fill
+                        className="rounded-xl object-cover"
+                      />
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               ))}

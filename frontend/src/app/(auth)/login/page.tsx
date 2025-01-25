@@ -49,8 +49,11 @@ const LoginPage = () => {
     try {
       const response = await axiosInstance.post("/auth/login", data);
 
-      const { id, name, email, role, image } = response.data;
+      const { id, name, email, role, image, token } = response.data;
       const user = { id, name, email, role, image };
+      document.cookie = `token=${token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }; Secure; SameSite=Strict`;
       sessionStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       toast.success("Login successful!");

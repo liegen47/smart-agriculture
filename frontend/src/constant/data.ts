@@ -1,16 +1,25 @@
 import { Icons } from "@/components/icons";
 
 
-export type field = {
-  photo_url: string;
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+
+export interface Field {
+  _id: string;
   name: string;
-  description: string;
-  created_at: string;
-  price: number;
-  id: number;
-  category: string;
-  updated_at: string;
-};
+  location: Location;
+  cropType: string[]; 
+  areaSize: number;
+  soilHealth: string;
+  cropHealth: string;
+  yieldTrends: any[];
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number; 
+}
 
 export interface NavItem {
     title: string;

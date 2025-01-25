@@ -1,49 +1,56 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import axiosInstance from './lib/axios';
+import axios from 'axios';
 
 export async function middleware(request: NextRequest) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('token')?.value;
-
   const publicRoutes = ['/login', '/register'];
 
-  if (publicRoutes.includes(request.nextUrl.pathname) && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+  if (publicRoutes.includes(request.nextUrl.pathname)) {
+    const token = request.cookies.get('token')?.value;
+    if (token) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+    return NextResponse.next();
   }
 
-  if (!publicRoutes.includes(request.nextUrl.pathname) && !token) {
+  const token = request.cookies.get('token')?.value;
+
+  if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (!publicRoutes.includes(request.nextUrl.pathname) && token) {
-    try {
-      const verifyResponse = await axiosInstance.get('/auth/verify', {
+  try {
+    const verifyResponse = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/verify`,
+      {
         headers: {
-          Referer: process.env.NEXT_PUBLIC_FRONTEND_URL,
-          cookie: `token=${token}`,
+          Referer: process.env.NEXT_PUBLIC_FRONTEND_URL, 
+          Authorization: `Bearer ${token}`,
         },
-      });
-      
-      if (verifyResponse.status !== 200) {
-        const response = NextResponse.redirect(new URL('/login', request.url));
-        response.cookies.delete('token');
-        return response;
       }
-    } catch (error) {
-      console.error('Error verifying token:', error);
+    );
 
-      // Clear session storage and cookies
-      const response = NextResponse.redirect(new URL('/login', request.url));
-      response.cookies.delete('token'); // Clear the token cookie
-      return response;
+    if (verifyResponse.status !== 200) {
+      console.warn(`Unexpected response status: ${verifyResponse.status}`);
+      return NextResponse.redirect(new URL('/login', request.url));
     }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error verifying token:', {
+        message: error.message,
+        stack: error.stack,
+        response: error.response?.data,
+      });
+    } else {
+      console.error('Unexpected error verifying token:', error);
+    }
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 }
 
+// Apply middleware to selected routes
 export const config = {
   matcher: ['/dashboard/:path*', '/profile/:path*', '/login', '/register'],
 };

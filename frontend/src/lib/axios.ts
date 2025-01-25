@@ -2,9 +2,16 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  withCredentials: true,
+  withCredentials: true, 
 });
 
+axiosInstance.interceptors.request.use((config) => {
+  const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -12,8 +19,8 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Redirect to login if the token is invalid or expired
-    //   window.location.href = '/login';
+      document.cookie = 'token=; Max-Age=0; path=/;'; // Clear the token cookie
+      window.location.href = '/login'; 
     }
     return Promise.reject(error);
   }

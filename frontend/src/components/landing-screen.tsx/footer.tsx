@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { Dribbble, Github, Twitch, Twitter } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "../logo/logo";
 
 const footerLinks = [
   {
@@ -37,12 +38,13 @@ const Footer = () => {
         <div className="max-w-screen-xl mx-auto">
           <div className="py-12 flex flex-col justify-start items-center">
             {/* Replace the logo with your project's logo */}
-            <div className="text-2xl font-bold text-foreground">
+            <div className="flex gap-4 text-2xl font-bold text-foreground">
+              <Logo className="h-8 w-8" />
               NatureSense
             </div>
 
             {/* Footer Links */}
-            <ul className="mt-6 flex items-center gap-4 flex-wrap">
+            <ul className="m-6 flex items-center gap-4 flex-wrap">
               {footerLinks.map(({ title, href }) => (
                 <li key={title}>
                   <Link

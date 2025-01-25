@@ -16,16 +16,16 @@ exports.registerUser = async (req, res) => {
 
     const user = await User.create({ name, email, password, role });
     const token = generateToken(user.id);
-    res.cookie("token", token, {
-      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: true, // Ensures the cookie is only sent over HTTPS
-      sameSite: "none", // Allows the cookie to be sent in cross-site requests
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+    //   secure: process.env.NODE_ENV === "production",
+    // });
     res.json({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
+      token: token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -40,16 +40,16 @@ exports.loginUser = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = generateToken(user.id);
-      res.cookie("token", token, {
-        httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-        secure: true, // Ensures the cookie is only sent over HTTPS
-        sameSite: "none", // Allows the cookie to be sent in cross-site requests
-      });
+      // res.cookie("token", token, {
+      //   httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+      //   secure: process.env.NODE_ENV === "production", // Ensures the cookie is only sent over HTTPS
+      // });
       res.json({
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
+        token: token,
       });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
@@ -82,16 +82,16 @@ exports.adminLogin = async (req, res) => {
     }
 
     const token = generateToken(user.id);
-    res.cookie("token", token, {
-      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: true, // Ensures the cookie is only sent over HTTPS
-      sameSite: "none", // Allows the cookie to be sent in cross-site requests
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+    //   secure: process.env.NODE_ENV === "production", // Ensures the cookie is only sent over HTTPS
+    // });
     res.json({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
+      token: token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -99,7 +99,7 @@ exports.adminLogin = async (req, res) => {
 };
 
 exports.authVerify = async (req, res) => {
-  const token = req.headers.cookie.replace("token=", "");
+  const token = req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ message: "No token provided" });

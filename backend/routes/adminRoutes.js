@@ -18,7 +18,7 @@ const {
  *     summary: Retrieve all users
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of users
@@ -40,7 +40,7 @@ router.get("/users", protect, isAdmin, getAllUsers);
  *     summary: Retrieve all farmers
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of farmers
@@ -62,7 +62,7 @@ router.get("/farmers", protect, isAdmin, getAllFarmers);
  *     summary: Approve a farmer
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -87,7 +87,7 @@ router.put("/farmers/:id/approve", protect, isAdmin, approveFarmer);
  *     summary: Delete a farmer
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -112,7 +112,7 @@ router.delete("/farmers/:id", protect, isAdmin, deleteFarmer);
  *     summary: Retrieve all fields
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of fields
@@ -141,7 +141,7 @@ router.get("/fields", protect, isAdmin, getAllFields);
  *     summary: Retrieve data for a specific field by ID
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -181,7 +181,7 @@ router.get("/fields/:id", protect, isAdmin, getFieldDataById);
  *     summary: Retrieve analytics for a specific field
  *     tags: [Admin]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path

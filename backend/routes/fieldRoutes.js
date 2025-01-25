@@ -24,7 +24,7 @@ const router = express.Router();
  *     summary: Get all fields with pagination, sorting, and filtering
  *     tags: [Fields]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -61,7 +61,7 @@ router.get("/", protect, getFields);
  *     summary: Add a new field
  *     tags: [Fields]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -102,7 +102,7 @@ router.post("/", protect, addField);
  *     summary: Retrieve data for a specific field by ID
  *     tags: [Fields]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -147,7 +147,7 @@ router.get("/:id", protect, getFieldData);
  *     summary: Update an existing field
  *     tags: [Fields]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -188,7 +188,7 @@ router.put("/:id", protect, updateField);
  *     summary: Delete a field
  *     tags: [Fields]
  *     security:
- *       - CookieAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

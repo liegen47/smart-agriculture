@@ -29,12 +29,12 @@ const page = () => {
                 and implement, to streamline your development workflow with
                 practical examples.
               </p>
-              <div className="mt-12 flex items-center gap-4">
-                <Link href="/dashboard">
-                  <Button size="lg" className="rounded-full text-base">
+              <div className="mt-12 flex flex-col md:flex-row md:items-center gap-4">
+                <Button size="lg" className="rounded-full text-base">
+                  <Link href="/dashboard" className="flex items-center gap-2">
                     Get Started <ArrowUpRight className="!h-5 !w-5" />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Button
                   variant="outline"
                   size="lg"

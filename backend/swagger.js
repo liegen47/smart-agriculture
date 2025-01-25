@@ -18,10 +18,10 @@ const swaggerDefinition = {
   ],
   components: {
     securitySchemes: {
-      CookieAuth: {
-        type: "apiKey",
-        in: "cookie",
-        name: "token",
+      BearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
         description: "JWT token for authentication",
       },
     },
@@ -120,7 +120,7 @@ const swaggerDefinition = {
 
   security: [
     {
-      CookieAuth: [],
+      BearerAuth: [],
     },
   ],
 };
