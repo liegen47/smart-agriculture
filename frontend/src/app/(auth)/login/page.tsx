@@ -66,6 +66,7 @@ const LoginPage = () => {
       }
     } finally {
       setIsLoading(false);
+      window.location.reload();
     }
   };
 

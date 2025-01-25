@@ -69,6 +69,7 @@ const RegisterPage = () => {
       }
     } finally {
       setIsLoading(false);
+      window.location.reload();
     }
   };
 
