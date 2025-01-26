@@ -1,5 +1,4 @@
 
-```
 # Smart Agriculture Management System 🌾
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.3-000000?style=flat&logo=next.js)](https://nextjs.org/)
