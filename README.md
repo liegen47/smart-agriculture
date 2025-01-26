@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-7.0.1-47A248?style=flat&logo=mongodb)](https://www.mongodb.com/)
 
-A modern full-stack application for agricultural management, featuring IoT integration, AI analysis, and payment processing. Built with Next.js (TypeScript) frontend and Node.js/Express.js backend.
+A modern full-stack application for agricultural management, AI analysis, and payment processing. Built with Next.js (TypeScript) frontend and Node.js/Express.js backend.
 
 ![System Overview](https://via.placeholder.com/800x400.png?text=Smart+Agriculture+Dashboard+Preview)
 
