@@ -8,16 +8,16 @@ router.post(
   express.raw({ type: "application/json" }),
   async (req, res) => {
     const sig = req.headers["stripe-signature"];
-    const rawBody = req.body;
+
+    const payload = req.body;
+    const payloadString = JSON.stringify(payload);
 
     let event;
     console.log("Webhook called");
     try {
-      event = stripe.webhooks.constructEvent(
-        rawBody,
-        sig,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
+      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET.trim();
+
+      event = stripe.webhooks.constructEvent(payloadString, sig, webhookSecret);
     } catch (err) {
       console.error(`Webhook Error: ${err.message}`);
       return res.status(400).send(`Webhook Error: ${err.message}`);
