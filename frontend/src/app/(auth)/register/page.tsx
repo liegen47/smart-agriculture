@@ -76,6 +76,7 @@ const RegisterPage = () => {
       }; Secure; SameSite=Strict`;
       sessionStorage.setItem("user", JSON.stringify(user));
       setUser(user);
+      window.location.reload();
       toast.success("Registration successful! You are now logged in.");
       router.push("/dashboard");
     } catch (error) {
@@ -86,7 +87,6 @@ const RegisterPage = () => {
       }
     } finally {
       setIsLoading(false);
-      window.location.reload();
     }
   };
 

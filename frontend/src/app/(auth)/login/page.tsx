@@ -73,6 +73,7 @@ const LoginPage = () => {
       }; Secure; SameSite=Strict`;
       sessionStorage.setItem("user", JSON.stringify(user));
       setUser(user);
+      window.location.reload();
       toast.success("Login successful!");
       router.push("/dashboard");
     } catch (error) {
@@ -83,7 +84,6 @@ const LoginPage = () => {
       }
     } finally {
       setIsLoading(false);
-      window.location.reload();
     }
   };
 
