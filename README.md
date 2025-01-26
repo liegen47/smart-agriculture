@@ -1,4 +1,3 @@
-
 # Smart Agriculture Management System 🌾
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.1.6-000000?style=flat&logo=next.js)](https://nextjs.org/)
@@ -30,6 +29,13 @@ A modern full-stack application for agricultural management, AI analysis, and pa
 - 🗃️ MongoDB database management
 - 📡 WebSocket support for real-time updates
 - ⚙️ Role-based access control (Admin/Farmer)
+
+### Admin Panel
+- 👨‍💼 **User Management**: Approve/disapprove farmers, manage roles, and view user activity.
+- 📊 **Analytics Dashboard**: Monitor system-wide metrics, including crop health, subscription status, and revenue.
+- 💼 **Subscription Management**: View and manage user subscriptions, including upgrades, downgrades, and cancellations.
+- 🔒 **Security Settings**: Configure system-wide security policies, including password requirements and session management.
+- 📝 **Logs & Audits**: Access detailed logs for user actions, system events, and API requests.
 
 ## 🛠️ Tech Stack
 
@@ -188,4 +194,46 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - GitHub: [@liegen47](https://github.com/liegen47)
 - LinkedIn: [vanshkapoor418](https://linkedin.com/in/vanshkapoor418)
 
-```
+---
+
+### **Admin Panel Features**
+
+#### **User Management**
+- **Approve/Disapprove Farmers**: Admins can approve or disapprove farmer accounts.
+- **Role Management**: Assign roles (Admin, Farmer) to users.
+- **Activity Tracking**: View user login history and activity logs.
+
+#### **Analytics Dashboard**
+- **System Metrics**: Monitor total users, active subscriptions, and revenue.
+- **Crop Health**: View AI-generated crop health reports.
+- **Subscription Trends**: Track subscription growth and churn rates.
+
+#### **Subscription Management**
+- **View Subscriptions**: List all active, inactive, and trialing subscriptions.
+- **Modify Plans**: Upgrade or downgrade user subscription plans.
+- **Cancel Subscriptions**: Cancel subscriptions on behalf of users.
+
+#### **Security Settings**
+- **Password Policies**: Configure password complexity requirements.
+- **Session Management**: Set session timeout and logout policies.
+- **Audit Logs**: Track changes made by admins and users.
+
+#### **Logs & Audits**
+- **User Actions**: Log all user actions, including login attempts and profile updates.
+- **System Events**: Track system events, such as API requests and errors.
+- **Audit Trails**: Maintain a detailed audit trail for compliance and troubleshooting.
+
+---
+
+### **Admin Panel Screenshots**
+
+#### **User Management**
+![User Management](https://raw.githubusercontent.com/liegen47/smart-agriculture/main/docs/images/admin-user-management.png)
+
+#### **Analytics Dashboard**
+![Analytics Dashboard](https://raw.githubusercontent.com/liegen47/smart-agriculture/main/docs/images/admin-analytics.png)
+
+#### **Subscription Management**
+![Subscription Management](https://raw.githubusercontent.com/liegen47/smart-agriculture/main/docs/images/admin-subscriptions.png)
+
+---
