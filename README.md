@@ -1,7 +1,7 @@
 
 # Smart Agriculture Management System 🌾
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.3-000000?style=flat&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.1.6-000000?style=flat&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=flat&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-7.0.1-47A248?style=flat&logo=mongodb)](https://www.mongodb.com/)
