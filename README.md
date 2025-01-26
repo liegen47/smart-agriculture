@@ -8,7 +8,7 @@
 
 A modern full-stack application for agricultural management, AI analysis, and payment processing. Built with Next.js (TypeScript) frontend and Node.js/Express.js backend.
 
-![System Overview](https://via.placeholder.com/800x400.png?text=Smart+Agriculture+Dashboard+Preview)
+![System Overview](https://raw.githubusercontent.com/liegen47/smart-agriculture/main/docs/images/image.png)
 
 ## ✨ Features
 
@@ -189,16 +189,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - LinkedIn: [vanshkapoor418](https://linkedin.com/in/vanshkapoor418)
 
 ```
-
-This README includes:
-1. Modern badges for key technologies
-2. Clear feature categorization
-3. Detailed installation instructions
-4. Stripe integration guide
-5. Deployment instructions for both ends
-6. Project structure visualization
-7. API documentation section
-8. Contribution guidelines
-9. License and contact information
-
-You can customize the placeholder image URL with an actual screenshot of your application.
