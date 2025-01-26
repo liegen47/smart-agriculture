@@ -54,7 +54,7 @@ const LandingNavbar = () => {
                 <Button variant="outline">Sign In</Button>
               </Link>
 
-              <Link href="/register" passHref>
+              <Link href="/register" passHref className="hidden sm:inline-flex">
                 <Button className="hidden sm:inline-flex">Sign Up</Button>
               </Link>
             </>
