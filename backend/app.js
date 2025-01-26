@@ -13,8 +13,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use((req, res, next) => {
+  if (req.originalUrl === "/api/stripe/webhook") {
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
 
-// Important: Configure port for Render.com
 const PORT = process.env.PORT || 10000;
 
 const corsOptions = {
@@ -24,17 +30,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// Move the raw body parser before any other middleware
-app.use(
-  express.json({
-    verify: (req, res, buf) => {
-      if (req.originalUrl.startsWith("/api/stripe/webhook")) {
-        req.rawBody = buf.toString();
-      }
-    },
-  })
-);
 
 // Routes
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
