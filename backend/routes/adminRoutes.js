@@ -58,7 +58,7 @@ router.get("/farmers", protect, isAdmin, getAllFarmers);
 /**
  * @swagger
  * /api/admin/farmers/{id}/approve:
- *   put:
+ *   patch:
  *     summary: Approve a farmer
  *     tags: [Admin]
  *     security:
@@ -78,7 +78,7 @@ router.get("/farmers", protect, isAdmin, getAllFarmers);
  *       404:
  *         description: Not Found - Farmer not found
  */
-router.put("/farmers/:id/approve", protect, isAdmin, approveFarmer);
+router.patch("/farmers/:id/approve", protect, isAdmin, approveFarmer);
 
 /**
  * @swagger

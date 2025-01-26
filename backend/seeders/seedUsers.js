@@ -27,7 +27,16 @@ const createStripeCustomer = async (email, name) => {
 // Function to generate a fake user
 const generateFakeUser = async (role) => {
   const name = faker.person.fullName();
-  const email = faker.internet.email();
+  // Generate email based on role
+  const email =
+    role === "admin"
+      ? faker.internet.email({
+          firstName: name.split(" ")[0],
+          lastName: name.split(" ")[1],
+          provider: "naturesense.com",
+        })
+      : faker.internet.email();
+
   const password = "password123";
   const isApproved = role === "farmer" ? faker.datatype.boolean() : true;
 
@@ -79,7 +88,7 @@ const seedUsers = async () => {
       Array.from({ length: 2 }, () => generateFakeUser("admin"))
     );
     await User.insertMany(admins);
-    console.log("Added 2 admin users.");
+    console.log("Added 2 admin users with @naturesense.com emails");
 
     // Generate fake farmers
     const farmers = await Promise.all(

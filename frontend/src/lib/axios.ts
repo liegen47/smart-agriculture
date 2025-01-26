@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      document.cookie = 'token=; Max-Age=0; path=/;'; // Clear the token cookie
+      document.cookie = 'token=; Max-Age=0; path=/;';
       window.location.href = '/login'; 
     }
     return Promise.reject(error);

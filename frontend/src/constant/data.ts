@@ -68,3 +68,22 @@ export const navItems: NavItem[] = [
   },
 ];
 
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: "admin" | "farmer";
+  isApproved: boolean;
+  clientReferenceId: string | null;
+  createdAt: Date;
+
+  // Subscription-related fields
+  stripeCustomerId: string | null;
+  subscriptionStatus: "active" | "inactive" | "past_due" | "canceled" | "trialing";
+  subscriptionPlanId: string | null;
+  subscriptionStart: Date | null;
+  subscriptionEnd: Date | null;
+  trialEnd: Date | null;
+  cancelAtPeriodEnd: boolean;
+}

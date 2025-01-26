@@ -31,11 +31,15 @@ import {
   UserPen,
   UserX2Icon,
   X,
+  ShieldCheck,
+  Users,
+  Activity,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  shield: ShieldCheck,
   dashboard: LayoutDashboardIcon,
   logo: Command,
   login: LogIn,
@@ -48,6 +52,8 @@ export const Icons = {
   trash: Trash,
   employee: UserX2Icon,
   post: FileText,
+  users: Users,
+  activity: Activity,
   page: File,
   userPen: UserPen,
   user2: UserCircle2Icon,

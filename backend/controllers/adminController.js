@@ -3,9 +3,25 @@ const Field = require("../models/Field");
 
 // Get all users (both admins and farmers)
 exports.getAllUsers = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
   try {
-    const users = await User.find().select("-password"); // Exclude passwords from the response
-    res.status(200).json(users);
+    const users = await User.find().select("-password").skip(skip).limit(limit);
+
+    const totalUsers = await User.countDocuments();
+
+    res.status(200).json({
+      users,
+      pagination: {
+        totalUsers,
+        currentPage: page,
+        totalPages: Math.ceil(totalUsers / limit),
+        hasNextPage: page * limit < totalUsers,
+        hasPrevPage: page > 1,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -13,9 +29,28 @@ exports.getAllUsers = async (req, res) => {
 
 // Get all farmers
 exports.getAllFarmers = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
   try {
-    const farmers = await User.find({ role: "farmer" }).select("-password");
-    res.status(200).json(farmers);
+    const farmers = await User.find({ role: "farmer" })
+      .select("-password")
+      .skip(skip)
+      .limit(limit);
+
+    const totalFarmers = await User.countDocuments({ role: "farmer" });
+
+    res.status(200).json({
+      users: farmers,
+      pagination: {
+        totalFarmers,
+        currentPage: page,
+        totalPages: Math.ceil(totalFarmers / limit),
+        hasNextPage: page * limit < totalFarmers,
+        hasPrevPage: page > 1,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
