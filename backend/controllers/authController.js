@@ -1,12 +1,23 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { default: axios } = require("axios");
-
+const stripeClient = require("../config/stripe");
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "24h" });
 };
 
+const createStripeCustomer = async (email, name) => {
+  try {
+    const customer = await stripeClient.customers.create({
+      email,
+      name,
+    });
+    return customer.id;
+  } catch (error) {
+    console.error("Error creating Stripe customer:", error);
+    return null;
+  }
+};
 // Register user
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -32,11 +43,8 @@ exports.registerUser = async (req, res) => {
       cancelAtPeriodEnd: false,
     });
 
-    const stripeResponse = await axios.post("/api/stripe/create-customer", {
-      email,
-      userId: user._id,
-    });
-    user.stripeCustomerId = stripeResponse.data.customerId;
+    const stripeCustomerId = await createStripeCustomer(email, name);
+    user.stripeCustomerId = stripeCustomerId;
     await user.save();
 
     const token = generateToken(user.id);

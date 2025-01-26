@@ -1,36 +1,7 @@
 const express = require("express");
 const router = express.Router();
-require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const User = require("../models/User");
-
-//creating customer
-
-router.post("/create-customer", async (req, res) => {
-  const { email, userId } = req.body;
-
-  try {
-    const customer = await stripe.customers.create({
-      email,
-      metadata: { userId },
-    });
-
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { stripeCustomerId: customer.id },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({ customerId: customer.id });
-  } catch (error) {
-    console.error("Error creating Stripe customer:", error);
-    res.status(500).json({ message: error.message });
-  }
-});
+const stripe = require("../config/stripe");
 
 router.post(
   "/webhook",
