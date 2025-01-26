@@ -9,7 +9,7 @@ const generateToken = (id) => {
 
 // Register user
 exports.registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
@@ -24,7 +24,6 @@ exports.registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,
       subscriptionStatus: "inactive",
       subscriptionPlanId: null,
       subscriptionStart: null,
@@ -46,9 +45,9 @@ exports.registerUser = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      stripeCustomerId: user.stripeCustomerId,
       role: user.role,
       subscriptionStatus: user.subscriptionStatus,
+      subscriptionPlanId: user.subscriptionPlanId,
       token: token,
     });
   } catch (error) {
@@ -72,7 +71,6 @@ exports.loginUser = async (req, res) => {
           id: user.id,
           name: user.name,
           email: user.email,
-          stripeCustomerId: user.stripeCustomerId,
           role: user.role,
           subscriptionStatus: user.subscriptionStatus,
           subscriptionPlanId: user.subscriptionPlanId,
