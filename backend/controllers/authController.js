@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { default: axios } = require("axios");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "24h" });
@@ -9,48 +10,77 @@ const generateToken = (id) => {
 // Register user
 exports.registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
+
   try {
     const userExists = await User.findOne({ email });
-    if (userExists)
+    if (userExists) {
       return res.status(400).json({ message: "User already exists" });
+    }
 
-    const user = await User.create({ name, email, password, role });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      subscriptionStatus: "inactive",
+      subscriptionPlanId: null,
+      subscriptionStart: null,
+      subscriptionEnd: null,
+      trialEnd: null,
+      cancelAtPeriodEnd: false,
+    });
+
+    const stripeResponse = await axios.post("/api/stripe/create-customer", {
+      email,
+      userId: user._id,
+    });
+    user.stripeCustomerId = stripeResponse.data.customerId;
+    await user.save();
+
     const token = generateToken(user.id);
-    // res.cookie("token", token, {
-    //   httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-    //   secure: process.env.NODE_ENV === "production",
-    // });
+
     res.json({
       id: user.id,
       name: user.name,
       email: user.email,
+      stripeCustomerId: user.stripeCustomerId,
       role: user.role,
+      subscriptionStatus: user.subscriptionStatus,
       token: token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 // Login user
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const token = generateToken(user.id);
-      // res.cookie("token", token, {
-      //   httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      //   secure: process.env.NODE_ENV === "production", // Ensures the cookie is only sent over HTTPS
-      // });
-      res.json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: token,
-      });
+    if (user) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        const token = generateToken(user.id);
+
+        res.json({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          stripeCustomerId: user.stripeCustomerId,
+          role: user.role,
+          subscriptionStatus: user.subscriptionStatus,
+          subscriptionPlanId: user.subscriptionPlanId,
+          token: token,
+        });
+      } else {
+        res.status(401).json({ message: "Invalid credentials" });
+      }
     } else {
       res.status(401).json({ message: "Invalid credentials" });
     }
@@ -59,33 +89,26 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-//admin login
+// Admin login
 exports.adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Check if the user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Check if the user is an admin
     if (user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const token = generateToken(user.id);
-    // res.cookie("token", token, {
-    //   httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-    //   secure: process.env.NODE_ENV === "production", // Ensures the cookie is only sent over HTTPS
-    // });
     res.json({
       id: user.id,
       name: user.name,
@@ -107,21 +130,55 @@ exports.authVerify = async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     res.status(200).json({
       message: "Token is valid",
-      user: { id: decoded.id },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        subscriptionStatus: user.subscriptionStatus,
+        subscriptionPlanId: user.subscriptionPlanId,
+      },
     });
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
 };
+
 // Logout user
 exports.logoutUser = async (req, res) => {
   try {
-    // Clear the token from the authorization header
-    delete req.headers.authorization; // Remove the authorization header
+    delete req.headers.authorization;
     res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get user profile
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      subscriptionStatus: user.subscriptionStatus,
+      subscriptionPlanId: user.subscriptionPlanId,
+      subscriptionEnd: user.subscriptionEnd,
+      cancelAtPeriodEnd: user.cancelAtPeriodEnd,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

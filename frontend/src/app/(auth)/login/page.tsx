@@ -41,16 +41,33 @@ const LoginPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const router = useRouter(); // Initialize the router
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true); // Start loading
     try {
       const response = await axiosInstance.post("/auth/login", data);
 
-      const { id, name, email, role, image, token } = response.data;
-      const user = { id, name, email, role, image };
+      const {
+        id,
+        name,
+        email,
+        role,
+        image,
+        token,
+        subscriptionPlanId,
+        subscriptionStatus,
+      } = response.data;
+      const user = {
+        id,
+        name,
+        email,
+        role,
+        image,
+        subscriptionPlanId,
+        subscriptionStatus,
+      };
       document.cookie = `token=${token}; path=/; max-age=${
         60 * 60 * 24 * 7
       }; Secure; SameSite=Strict`;

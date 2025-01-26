@@ -14,6 +14,14 @@ type User = {
   email: string;
   role: string;
   image: string;
+  subscriptionPlanId: string | null;
+  subscriptionStatus:
+    | "active"
+    | "inactive"
+    | "past_due"
+    | "canceled"
+    | "trialing"
+    | null;
 } | null;
 
 type UserContextType = {

@@ -1,6 +1,6 @@
-import FeatureSection from "@/components/landing-screen.tsx/feature-section";
-import Footer from "@/components/landing-screen.tsx/footer";
-import PricingSection from "@/components/landing-screen.tsx/pricing-plan";
+import FeatureSection from "@/components/landing-screen/feature-section";
+import Footer from "@/components/landing-screen/footer";
+import PricingSection from "@/components/landing-screen/pricing-plan";
 import LandingNavbar from "@/components/navigation/landing-page/navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

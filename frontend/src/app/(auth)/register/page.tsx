@@ -52,8 +52,9 @@ const RegisterPage = () => {
     try {
       const response = await axiosInstance.post("/auth/register", data);
 
-      const { id, name, email, role, image, token } = response.data;
-      const user = { id, name, email, role, image };
+      const { id, name, email, role, image, token, stripeCustomerId } =
+        response.data;
+      const user = { id, name, email, role, image, stripeCustomerId };
       document.cookie = `token=${token}; path=/; max-age=${
         60 * 60 * 24 * 7
       }; Secure; SameSite=Strict`;

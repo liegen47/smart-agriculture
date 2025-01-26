@@ -74,7 +74,7 @@ const PricingSection: React.FC = () => {
       title: "Free Plan",
       description:
         "Perfect for individuals and small teams getting started with basic scheduling tools.",
-      price: "$0",
+      price: "₹0",
       tooltip:
         "The Free Plan includes basic scheduling features with limited customization options.",
       buttonText: "Get Started",
@@ -83,7 +83,7 @@ const PricingSection: React.FC = () => {
       title: "Pro Plan",
       description:
         "For teams that need advanced scheduling tools to streamline workflows and enhance collaboration.",
-      price: "$20",
+      price: "₹300",
       tooltip:
         "Seats are required for users to connect calendars and create links to help book meetings.",
       buttonText: "Try for Free",

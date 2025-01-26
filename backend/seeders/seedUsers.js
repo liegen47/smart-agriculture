@@ -1,20 +1,47 @@
-const connectDB = require("../config/db"); // Import your database connection
+const connectDB = require("../config/db");
 const { faker } = require("@faker-js/faker");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const User = require("../models/User"); // Adjust the path to your User model
+const User = require("../models/User");
 const dotenv = require("dotenv");
+const stripe = require("stripe");
+
 dotenv.config();
+
+const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
+
+// Function to create a Stripe customer
+const createStripeCustomer = async (email, name) => {
+  try {
+    const customer = await stripeClient.customers.create({
+      email,
+      name,
+    });
+    return customer.id;
+  } catch (error) {
+    console.error("Error creating Stripe customer:", error);
+    return null;
+  }
+};
 
 // Function to generate a fake user
 const generateFakeUser = async (role) => {
   const name = faker.person.fullName();
   const email = faker.internet.email();
-  const password = "password123"; // Default password for all fake users
-  const isApproved = role === "farmer" ? faker.datatype.boolean() : true; // Farmers may or may not be approved
+  const password = "password123";
+  const isApproved = role === "farmer" ? faker.datatype.boolean() : true;
 
-  // Encrypt the password
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  const subscriptionStatus = faker.helpers.arrayElement([
+    "active",
+    "inactive",
+    "past_due",
+    "canceled",
+    "trialing",
+  ]);
+
+  const stripeCustomerId = await createStripeCustomer(email, name);
 
   return {
     name,
@@ -22,6 +49,18 @@ const generateFakeUser = async (role) => {
     password: hashedPassword,
     role,
     isApproved,
+    stripeCustomerId,
+    clientReferenceId: faker.string.uuid(),
+    subscriptionStatus,
+    subscriptionPlanId:
+      subscriptionStatus !== "inactive" ? faker.string.alphanumeric(14) : null,
+    subscriptionStart:
+      subscriptionStatus !== "inactive" ? faker.date.past() : null,
+    subscriptionEnd:
+      subscriptionStatus !== "inactive" ? faker.date.future() : null,
+    trialEnd: subscriptionStatus === "trialing" ? faker.date.future() : null,
+    cancelAtPeriodEnd:
+      subscriptionStatus === "active" ? faker.datatype.boolean() : false,
   };
 };
 
@@ -53,7 +92,8 @@ const seedUsers = async () => {
   } catch (error) {
     console.error("Error seeding database:", error);
   } finally {
-    mongoose.disconnect();
+    await mongoose.disconnect();
+    console.log("Database connection closed.");
   }
 };
 
