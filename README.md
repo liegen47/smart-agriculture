@@ -86,7 +86,7 @@ cd ../backend && npm install
 3. **Environment Setup**
 
 Create `.env` files with these variables:
-
+or else check respective repos for .env.example file
 **Backend (`backend/.env`):**
 ```env
 PORT=5000
