@@ -9,7 +9,7 @@ import { MailIcon, MapPinIcon, MessageCircle, PhoneIcon } from "lucide-react";
 import Link from "next/link";
 
 const ContactPage = () => (
-  <div className="min-h-screen flex items-center justify-center py-16 bg-gradient-to-b from-green-50 to-white">
+  <div className="min-h-screen flex items-center justify-center py-16 bg-gradient-to-b from-green-50 to-white ">
     <div className="w-full max-w-screen-xl mx-auto px-6 xl:px-0">
       {/* Heading Section */}
       <div className="text-center">
