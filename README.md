@@ -1,4 +1,4 @@
-# Smart Agriculture Management System 🌾
+# NatureSense - Smart Agriculture Management System 🌾
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.1.6-000000?style=flat&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=flat&logo=react)](https://react.dev/)

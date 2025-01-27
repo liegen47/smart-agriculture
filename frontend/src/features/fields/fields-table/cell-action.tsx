@@ -17,12 +17,14 @@ import { toast } from "sonner";
 
 interface CellActionProps {
   data: Field;
+  role: "admin" | "farmer";
   deleteField: (fieldId: string) => void;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
   data,
   deleteField,
+  role,
 }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -62,23 +64,31 @@ export const CellAction: React.FC<CellActionProps> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-          <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/fields/${data._id}`)}
-          >
-            <Edit className="mr-2 h-4 w-4" /> Update
-          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/dashboard/fields/${data._id}/analytics`)
+              router.push(
+                `${role === "admin" ? "/admin" : ""}/dashboard/fields/${
+                  data._id
+                }/analytics`
+              )
             }
           >
             <ChartArea className="mr-2 h-4 w-4" />
-            Analytics
+            View Analytics
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
-          </DropdownMenuItem>
+          {role === "farmer" && (
+            <>
+              <DropdownMenuItem
+                onClick={() => router.push(`/dashboard/fields/${data._id}`)}
+              >
+                <Edit className="mr-2 h-4 w-4" /> Update
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => setOpen(true)}>
+                <Trash className="mr-2 h-4 w-4" /> Delete
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

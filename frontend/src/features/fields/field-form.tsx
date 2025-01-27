@@ -25,21 +25,8 @@ import { Icons } from "@/components/icons";
 import { toast } from "sonner";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { Field } from "@/constant/data";
 
-interface Location {
-  latitude: number;
-  longitude: number;
-}
-
-export interface Field {
-  _id?: string;
-  name: string;
-  location: Location;
-  cropTypes: [];
-  areaSize: number;
-}
-
-// Define the form schema using Zod
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Field name must be at least 2 characters.",

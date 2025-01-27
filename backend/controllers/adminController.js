@@ -97,9 +97,27 @@ exports.deleteFarmer = async (req, res) => {
 
 // Get all fields
 exports.getAllFields = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
   try {
-    const fields = await Field.find().populate("user", "name email");
-    res.status(200).json(fields);
+    const fields = await Field.find()
+      .skip(skip)
+      .limit(limit)
+      .populate("user", "name email");
+    const totalFields = await Field.countDocuments();
+
+    res.status(200).json({
+      fields,
+      pagination: {
+        totalFields,
+        currentPage: page,
+        totalPages: Math.ceil(totalFields / limit),
+        hasNextPage: page * limit < totalFields,
+        hasPrevPage: page > 1,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -161,6 +179,68 @@ exports.getFieldAnalytics = async (req, res) => {
       cropHealth,
       yieldTrends,
       recommendations,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+//application stats
+
+exports.getApplicationStats = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+
+    const totalSubscribedUsers = await User.countDocuments({
+      subscriptionStatus: { $in: ["active", "trialing"] },
+    });
+
+    const totalFarmers = await User.countDocuments({ role: "farmer" });
+
+    const approvedFarmers = await User.countDocuments({
+      role: "farmer",
+      isApproved: true,
+    });
+
+    const totalFields = await Field.countDocuments();
+
+    // Yield trends (average yield per field)
+    const fields = await Field.find({}, { yieldTrends: 1 });
+    const yieldTrends = fields
+      .map((field) => field.yieldTrends)
+      .flat()
+      .filter((yield) => yield !== undefined);
+    const averageYield =
+      yieldTrends.length > 0
+        ? yieldTrends.reduce((a, b) => a + b, 0) / yieldTrends.length
+        : 0;
+
+    // Soil health distribution
+    const soilHealthDistribution = await Field.aggregate([
+      { $group: { _id: "$soilHealth", count: { $sum: 1 } } },
+    ]);
+
+    // Crop health distribution
+    const cropHealthDistribution = await Field.aggregate([
+      { $group: { _id: "$cropHealth", count: { $sum: 1 } } },
+    ]);
+
+    // Subscription status distribution
+    const subscriptionStatusDistribution = await User.aggregate([
+      { $group: { _id: "$subscriptionStatus", count: { $sum: 1 } } },
+    ]);
+
+    // Response data
+    res.status(200).json({
+      totalUsers,
+      totalSubscribedUsers,
+      totalFarmers,
+      approvedFarmers,
+      totalFields,
+      averageYield: Math.round(averageYield),
+      soilHealthDistribution,
+      cropHealthDistribution,
+      subscriptionStatusDistribution,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

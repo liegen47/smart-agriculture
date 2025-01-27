@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import FieldForm, { Field } from "./field-form";
+import FieldForm from "./field-form";
 import { getDataById } from "@/lib/server-side-axios";
+import { Field } from "@/constant/data";
 
 type TFieldViewPageProps = {
   fieldId: string;

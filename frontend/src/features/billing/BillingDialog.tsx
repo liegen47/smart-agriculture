@@ -92,7 +92,7 @@ export default function Component() {
     }
 
     if (selectedPlan.priceId === "none") {
-      console.log("Free plan or custom plan selected");
+      alert("Contact us for custom plan selected");
       return;
     }
 
@@ -240,13 +240,24 @@ export default function Component() {
         </div>
 
         <div className="grid gap-2">
-          {selectedPlan.title !== "Free Plan" && !hasSamePlan && (
+          {selectedPlan.title !== "Free Plan" &&
+            selectedPlan.title !== "Enterprise Plan" &&
+            !hasSamePlan && (
+              <Button
+                type="button"
+                className="w-full"
+                onClick={() => onCheckout()}
+              >
+                Continue
+              </Button>
+            )}
+          {selectedPlan.title === "Enterprise Plan" && (
             <Button
               type="button"
               className="w-full"
-              onClick={() => onCheckout()}
+              onClick={() => router.push("/contact-us")}
             >
-              Continue
+              Contact Sales
             </Button>
           )}
           <DialogClose asChild>

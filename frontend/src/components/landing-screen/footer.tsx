@@ -18,15 +18,15 @@ const footerLinks = [
   },
   {
     title: "Pricing",
-    href: "/pricing",
+    href: "/contact-us",
   },
   {
     title: "Contact",
-    href: "/contact",
+    href: "/contact-us",
   },
   {
     title: "Privacy Policy",
-    href: "/privacy",
+    href: "/",
   },
 ];
 

@@ -1,6 +1,5 @@
 import { Icons } from "@/components/icons";
 
-
 interface Location {
   latitude: number;
   longitude: number;
@@ -10,16 +9,21 @@ export interface Field {
   _id: string;
   name: string;
   location: Location;
-  cropType: string[]; 
+  cropTypes: string[]; 
   areaSize: number;
   soilHealth: string;
   cropHealth: string;
-  yieldTrends: [];
-  user: string;
+  yieldTrends: []; 
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
   createdAt: string;
   updatedAt: string;
   __v: number; 
 }
+
 
 export interface NavItem {
     title: string;
@@ -32,7 +36,7 @@ export interface NavItem {
     description?: string;
     isActive?: boolean;
     items?: NavItem[];
-  }
+}
 
 export const navItems: NavItem[] = [
   {

@@ -10,6 +10,7 @@ const {
   getAllFields,
   getFieldAnalytics,
   getFieldDataById,
+  getApplicationStats,
 } = require("../controllers/adminController");
 /**
  * @swagger
@@ -115,7 +116,7 @@ router.delete("/farmers/:id", protect, isAdmin, deleteFarmer);
  *       - BearerAuth: []
  *     responses:
  *       200:
- *         description: A list of fields
+ *         description: A list of fields retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -125,10 +126,19 @@ router.delete("/farmers/:id", protect, isAdmin, deleteFarmer);
  *                 properties:
  *                   id:
  *                     type: string
+ *                     description: The unique identifier of the field
  *                   name:
  *                     type: string
+ *                     description: The name of the field
  *                   location:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       latitude:
+ *                         type: number
+ *                         description: The latitude of the field's location
+ *                       longitude:
+ *                         type: number
+ *                         description: The longitude of the field's location
  *       403:
  *         description: Forbidden - Admin access required
  */
@@ -209,4 +219,65 @@ router.get("/fields/:id", protect, isAdmin, getFieldDataById);
  *         description: Not Found - Field not found
  */
 router.get("/fields/:id/analytics", protect, isAdmin, getFieldAnalytics);
+
+/**
+ * @swagger
+ * /api/admin/application-stats:
+ *   get:
+ *     summary: Retrieve application statistics
+ *     tags: [Admin]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Application statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalUsers:
+ *                   type: number
+ *                 totalSubscribedUsers:
+ *                   type: number
+ *                 totalFarmers:
+ *                   type: number
+ *                 approvedFarmers:
+ *                   type: number
+ *                 totalFields:
+ *                   type: number
+ *                 averageYield:
+ *                   type: number
+ *                 soilHealthDistribution:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       count:
+ *                         type: number
+ *                 cropHealthDistribution:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       count:
+ *                         type: number
+ *                 subscriptionStatusDistribution:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       count:
+ *                         type: number
+ *       403:
+ *         description: Forbidden - Admin access required
+ */
+router.get("/application-stats", protect, isAdmin, getApplicationStats);
+
 module.exports = router;

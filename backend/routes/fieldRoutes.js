@@ -249,7 +249,7 @@ router.delete("/:id", protect, deleteField);
 
 /**
  * @swagger
- * /api/fields/{id}/analyze:
+ * /api/fields/{id}/analytics:
  *   post:
  *     summary: Analyze field data using AI
  *     tags: [Fields]
@@ -280,6 +280,6 @@ router.delete("/:id", protect, deleteField);
  *                   items:
  *                     type: string
  */
-router.post("/:id/analyze", protect, analyzeField);
+router.post("/:id/analytics", protect, analyzeField);
 
 module.exports = router;

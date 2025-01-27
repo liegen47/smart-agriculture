@@ -19,9 +19,9 @@ import {
 } from "@/components/ui/table";
 import { AreaChartComponent } from "./area-chart-component";
 import { ChartConfig } from "@/components/ui/chart";
-import { Field } from "../fields/field-form";
 import { StatCard } from "./stats-card";
 import { LandPlot, Wheat } from "lucide-react";
+import { Field } from "@/constant/data";
 
 export interface AnalyticsData {
   soilHealth: string;
@@ -67,7 +67,7 @@ export function AnalyticsComponent({
     <Card className="mx-auto w-full">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">
-          Field Analytics - {field?.name} ({currentYear})
+          Field Analytics - {field?.name} ({currentYear}) : {field?.user?.name}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">

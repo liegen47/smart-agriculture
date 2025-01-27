@@ -17,7 +17,6 @@ export async function getDataById<T, D = Record<string, unknown>>(
           Authorization: `Bearer ${token}`,
         },
       };
-
       let response;
       if (method === 'POST') {
         response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}/${id}`, data, config);

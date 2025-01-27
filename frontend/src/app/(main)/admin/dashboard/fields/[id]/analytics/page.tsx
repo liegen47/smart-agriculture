@@ -9,18 +9,20 @@ import {
 import { Field } from "@/constant/data";
 
 export const metadata = {
-  title: "Dashboard : Field Analytics",
+  title: "Admin Dashboard : Field Analytics",
 };
 
 type PageProps = { params: Promise<{ id: string }> };
 
-export default async function Page(props: PageProps) {
+export default async function AdminPage(props: PageProps) {
   const params = await props.params;
-  const field = await getDataById<Field>("fields", params.id);
+
+  const field = await getDataById<Field>("admin/fields", params.id);
+
   const data = (await getDataById<AnalyticsData>(
-    `fields/${params.id}`,
+    `admin/fields/${params.id}`,
     "analytics",
-    "POST"
+    "GET"
   )) || {
     soilHealth: "Fair",
     cropHealth: "Fair",
